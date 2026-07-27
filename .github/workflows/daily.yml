@@ -1,0 +1,66 @@
+name: Daily Finance News
+
+
+on:
+
+  schedule:
+
+    # 北京时间8:30
+    # UTC 00:30
+
+    - cron: "30 0 * * *"
+
+
+  workflow_dispatch:
+
+
+
+jobs:
+
+  run:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+
+    - name: Checkout
+
+      uses: actions/checkout@v4
+
+
+
+    - name: Setup Python
+
+      uses: actions/setup-python@v5
+
+      with:
+
+        python-version: "3.11"
+
+
+
+    - name: Install
+
+      run:
+
+        pip install -r requirements.txt
+
+
+
+    - name: Run bot
+
+      env:
+
+        VOLC_API_KEY:
+          ${{ secrets.VOLC_API_KEY }}
+
+
+        FEISHU_WEBHOOK:
+          ${{ secrets.FEISHU_WEBHOOK }}
+
+
+      run:
+
+        python main.py
